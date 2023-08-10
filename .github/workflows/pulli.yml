@@ -1,5 +1,5 @@
 # .github/workflows/flow1.yml
-name: Test and Upload Pypi
+name: Deploy fixes to other versions with rebase main
 
 on:
   push:
@@ -7,7 +7,6 @@ on:
       - main
 
 permissions:
-  pull-requests: write
   contents: write
   packages: write
 
@@ -24,5 +23,29 @@ jobs:
       with:
         python-version: "3.10"
 
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
+    - name: setup merge
+      run: |
+        set -x
+        git config --global user.email 'github-action@github.com'
+        git config --global user.name 'github-action@github.com'
+        git fetch
+
+    - name: commit and tag new version
+      run: |
+        set -x
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/GITHUB_REPOSITORY
+        git fetch --tags
+
+        for $branch in $BRANCHES; do
+          git pull
+          git checkout $branch
+          if ! git rebase main; then
+            git rebase --abort
+            gh pr create -B $branch \
+              -H main \
+              --body "Main branch was updated - needs to deploy the changes"
+          else
+            git push -f
+          fi
+      env:
+        BRANCHES: 11.0 13.0 14.0 15.0 16.0
