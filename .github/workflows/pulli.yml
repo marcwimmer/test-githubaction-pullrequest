@@ -1,0 +1,56 @@
+# .github/workflows/flow1.yml
+name: Deploy fixes to other versions with rebase main
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  pull-requests: write
+  contents: write
+  packages: write
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+
+    - name: setup merge
+      run: |
+        set -x
+        git config --global user.email 'github-action@github.com'
+        git config --global user.name 'github-action@github.com'
+        git fetch
+
+    - name: commit and tag new version
+      run: |
+        set -x
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        git fetch
+
+        for branch in $BRANCHES; do
+          git pull
+          git checkout $branch
+          if ! git rebase main; then
+            git rebase --abort
+
+            gh issue create \
+              --title "Main branch was updated - needs to deploy the changes to: ${branch}"
+              --body "Please execute:\ngit checkout ${branch}\ngit rebasemain"
+
+          else
+            git push -f
+          fi
+        done
+      env:
+        BRANCHES: "11.0"
+        GH_TOKEN: ${{ github.token }}
