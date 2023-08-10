@@ -44,6 +44,7 @@ jobs:
             gh pr create \
               -B $branch \
               -H main \
+              --title "Auto: deployupdated main branch to version" \
               --body "Main branch was updated - needs to deploy the changes"
 
           else
