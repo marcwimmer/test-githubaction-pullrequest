@@ -41,16 +41,7 @@ jobs:
 
             gh issue create \
               --title "Main branch was updated - needs to deploy the changes to: ${branch}" \
-              --body "$(cat <<EOF
-Please execute:
-
-git checkout ${branch}
-git rebasemain"
-EOF
-)"
-
-          else
-            git push -f
+              -F .github/workflows/pull.txt
           fi
         done
       env:
