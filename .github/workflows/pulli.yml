@@ -36,7 +36,9 @@ jobs:
         for branch in $BRANCHES; do
           git pull
           git checkout $branch
-          if ! git rebase main; then
+          if git rebase main; then
+            git push -f
+          else
             git rebase --abort
 
             cat .github/workflows/pull.txt | gh issue create \
