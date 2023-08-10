@@ -33,7 +33,7 @@ jobs:
     - name: commit and tag new version
       run: |
         set -x
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/GITHUB_REPOSITORY
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         git fetch --tags
 
         for $branch in $BRANCHES; do
