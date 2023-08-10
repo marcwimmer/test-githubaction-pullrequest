@@ -41,9 +41,11 @@ jobs:
           git checkout $branch
           if ! git rebase main; then
             git rebase --abort
-            gh pr create -B $branch \
+            gh pr create \
+              -B $branch \
               -H main \
               --body "Main branch was updated - needs to deploy the changes"
+
           else
             git push -f
           fi
