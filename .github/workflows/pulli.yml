@@ -41,7 +41,7 @@ jobs:
 
             gh issue create \
               --title "Main branch was updated - needs to deploy the changes to: ${branch}" \
-              -F .github/workflows/pull.txt
+              -F pull.txt
           fi
         done
       env:
