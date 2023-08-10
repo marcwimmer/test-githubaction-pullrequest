@@ -51,4 +51,4 @@ jobs:
           fi
         done
       env:
-        BRANCHES: 11.0
+        BRANCHES: "11.0"
