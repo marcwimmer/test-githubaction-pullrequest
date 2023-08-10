@@ -34,7 +34,7 @@ jobs:
       run: |
         set -x
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        git fetch --tags
+        git fetch
 
         for $branch in $BRANCHES; do
           git pull
@@ -49,5 +49,6 @@ jobs:
           else
             git push -f
           fi
+        done
       env:
         BRANCHES: 11.0
