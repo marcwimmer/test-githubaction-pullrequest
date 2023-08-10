@@ -36,7 +36,7 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         git fetch
 
-        for $branch in $BRANCHES; do
+        for branch in $BRANCHES; do
           git pull
           git checkout $branch
           if ! git rebase main; then
