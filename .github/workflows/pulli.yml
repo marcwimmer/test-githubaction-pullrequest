@@ -39,9 +39,9 @@ jobs:
           if ! git rebase main; then
             git rebase --abort
 
-            gh issue create \
+            cat .github/workflows/pull.txt | gh issue create \
               --title "Main branch was updated - needs to deploy the changes to: ${branch}" \
-              -F pull.txt
+              -F -
           fi
         done
       env:

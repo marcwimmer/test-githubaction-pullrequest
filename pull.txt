@@ -1,4 +1,0 @@
-Please execute:
-
-git checkout ${branch}
-git rebasemain"
