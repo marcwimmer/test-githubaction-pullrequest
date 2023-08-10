@@ -52,3 +52,4 @@ jobs:
         done
       env:
         BRANCHES: "11.0"
+        GH_TOKEN: ${{ github.token }}
